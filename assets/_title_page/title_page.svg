@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    xml:space="preserve"
-   sodipodi:docname="title_page_cs310-pr.svg"
+   sodipodi:docname="title_page.svg"
    inkscape:export-filename="title_page_cs310_pr.pdf"
    inkscape:export-xdpi="95.955559"
    inkscape:export-ydpi="95.955559"
@@ -372,7 +372,7 @@
            id="tspan8-9-4"
            x="156.50363"
            y="753.77765"
-           style="stroke-width:0.999997">Supervised by Dr Matthias Caro </tspan><tspan
+           style="stroke-width:0.999997"> </tspan><tspan
            sodipodi:role="line"
            x="156.50363"
            y="783.77753"
@@ -394,17 +394,12 @@
          x="14.732549"
          y="28.023586"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.144px;font-family:P052;-inkscape-font-specification:'P052, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.79651"
-         id="tspan3">Progress Report:</tspan><tspan
+         id="tspan2">CS324 Computer Graphics</tspan><tspan
          sodipodi:role="line"
          x="14.732549"
          y="41.953587"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.144px;font-family:P052;-inkscape-font-specification:'P052, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.79651"
-         id="tspan1">Interactive Proofs for Resource-</tspan><tspan
-         sodipodi:role="line"
-         x="14.732549"
-         y="55.883587"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.144px;font-family:P052;-inkscape-font-specification:'P052, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.79651"
-         id="tspan2">Constrained Quantum Learning</tspan></text></g><style
+         id="tspan9">Coursework Write-Up</tspan></text></g><style
      type="text/css"
      id="style1">
 	.st0{fill:#FFFFFF;}
