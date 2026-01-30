@@ -1,3 +1,72 @@
 \chapter{Running code}
+The project runs with two dependencies: \texttt{vite (7.2.4)} \cite{vite724-release} and \texttt{three (0.182.0)} \cite{threejs1820}. This has been tested to run on DCS machines.
 \section{Quickstart}
+To start the game, you can run:
+\begin{mintedbox}{shell}
+# Install dependencies
+npm install
+
+# Run a development server
+npm run dev
+\end{mintedbox}
+
+Then, a pop-up similar to the following should appear:
+\begin{mintedbox}{shell}
+  VITE v7.3.1  ready in 107 ms
+
+  ->  Local:   http://localhost:5173/
+  ->  Network: use --host to expose
+  ->  press h + enter to show help
+\end{mintedbox}
+
+You can then follow the link to the game (in the above case, visit \texttt{http://localhost:5173}, local to your own machine).
+
+\subsection{Speedrunning the game}
+
+As you enter the front page, the main menu \ref{fig:main_menu} will guide you to two areas, either the instruction page \ref{fig:instructions} or the level selection screen \ref{fig:level_selection}.
+
+Click on the \texttt{play} button to enter the level selection screen. From here, you need to unlock levels. Start on level one \ref{fig:level_one}, and read (or don't read) the provided text. Level two is a full graphics-enabled scren. Play around with movement and watch the animation switches between different directions. 
+
+You can use the standard \texttt{WASD/space} keybindings here, with \texttt{shift} held down to sprint (this only works in the forward direction). The keycard \ref{fig:keycard} is present on the desk in the room you spawned in, and you can interact with it by clicking \texttt{E} once. 
+
+Then, open the vault door \ref{fig:vault_door} on your left by interacting with it, and proceed to the red portal. You can switch to security camera view \ref{fig:security_cam} at any point by clicking \texttt{C}.
+
+Interact with the portal to enter the cutscene \ref{fig:cutscene}, return to main menu and enter the final level. From here, approach the large building in sight \ref{fig:level_three} - you may have to keep jumping to pass boundaries of height to get nearer to the building. Once reached, you can interact with it to finish the beginning of the game.
+
+At any point during levels two and three, if you wish to pause, you can do so with \texttt{ESC} to enter the pause menu \ref{fig:pause_menu}.
+
 \section{Notes on development}
+The codebase is organised (roughly) by system and level:
+
+\dirtree{%
+.1 src/.
+.2 core/ \DTcomment{GameStateManager, InputManager}.
+.2 LevelOne/.
+.3 index.js.
+.3 setup.js.
+.3 config.js.
+.3 RoomBuilder/.
+.3 props/.
+.3 utils/.
+.2 LevelTwo/.
+.3 setup.js.
+.3 config.js.
+.3 TerrainGenerator/.
+.3 Cutscene/.
+.3 props/.
+.2 ui/ \DTcomment{PauseMenu}.
+.2 utils/ \DTcomment{lightingUtils}.
+.2 main.js \DTcomment{Menus, game flow}.
+.2 GameLoop.js \DTcomment{Animation frame loop}.
+.2 LevelManager.js \DTcomment{Level lifecycle (load/cleanup)}.
+.2 CameraManager.js \DTcomment{Camera view switching}.
+.2 InteractionManager.js \DTcomment{Raycaster interaction}.
+.2 HUD.js \DTcomment{DOM-based HUD overlay}.
+.2 Character.js \DTcomment{Base GLTF character with AnimationMixer}.
+.2 SwatCharacter.js \DTcomment{Player: movement, collision, physics}.
+.2 ThirdPersonCamera.js \DTcomment{Camera controller with wall collision}.
+.2 RendererSetup.js \DTcomment{WebGL renderer config}.
+} 
+Each level has its own folder (\texttt{src/LevelOne/}, \texttt{src/LevelTwo/}), with its own prop factories, and a main builder. Levels return a \texttt{LevelData} object containing spawn point, collidables, lights, animation mixers, and doors.
+
+Animations can be found in \texttt{public/models/characters/} and general \texttt{.glb} models can be found in the higher-up \texttt{public/models/}. I will attribute these in later sections as there are many.
