@@ -1,6 +1,58 @@
 \chapter{Gameplay}
 \section{Levels \& Storyline Overview}
+\subsection{Core Narrative}
+We present a game where the main protagonist is an Army safety inspector sent to the Arctic Research Station Epsilon-7 after communications ceased 48 hours ago. The mission is to investigate, recover data, and determine what happened. 
+
+Scattered logs (cutscenes, text blobs) reveal that the researchers were studying dimensional anomalies, where "something breached containment". The rest is left to the imagination and can be worked on in further iterations of this game. 
+
+\subsection{Game State Machine}
+The game has, broadly, a state machine in \texttt{src/core/GameStateManager.js}, with states: 
+
+\begin{enumerate}
+  \item \texttt{MAIN\_MENU} \ref{fig:main_menu}
+  \item \texttt{LEVEL\_SELECT} \ref{fig:level_selection}
+  \item \texttt{BRIEFING} \ref{fig:level_one} corresponding to Level One in the perspective of the user
+  \item \texttt{LEVEL\_1\_ACTIVE} \ref{fig:keycard} corresponding to Level Two in the perspective of the user
+  \item \texttt{CUTSCENE} \ref{fig:cutscene}
+  \item \texttt{LEVEL\_2\_ACTIVE} \ref{fig:level_three} corresponding to Level Three in the perspective of the user
+\end{enumerate}
+
+\subsection{Level Overviews}
+The game begins in \texttt{BRIEFING} mode, with typewriter-style animated slides introducing the story. 
+
+We then enter the surface facility, a closed-off scientific lab with two rooms and plenty of light sources to contribute to a dingy appearance. The goal here is to find the "Emergency Override Keycard" on the desk and activate the portal past the vault room. A cutscene then plays, pulling us into an unknown area. 
+
+Finally, the next level takes place in the Arctic circle with procedurally-generated snow terrain. The goal is to find the sci-fi-esque building, which will trigger a story cutscene about abandoned chambers. 
+
+Levels unlock sequentially with \texttt{GameStateManager.unlockLevel()}.
+
 \section{Movement and Animations}
+\subsection{Movement}
+Player movement is defined in \texttt{src/SwatCharacter.js}. We track movement here in state, and double move speed when sprinting forwards with \texttt{SHIFT}. 
+\subsection{Animations}
+We use 7 animations on a character sourced from Mixamo \cite{mixamo}. Mixamo provided me with both character models and auto-rigged animations for all of \texttt{idle}, \texttt{walkForward}, \texttt{walkBackward}, \texttt{strafeLeft}, \texttt{strafeRight}, \texttt{jump}, \texttt{run}. To make these interact smoothly, I used 0.2s cross-fade blending. Also, the character models are originally very high resolution. To resolve this and keep project size small(ish) I had to destruct the resolution of some of the models via the \texttt{Decimate} modifier. Additionally, I reduced the resolution from 4096x4096 to 1024x1024 for the body textures of all models. 
+
+Right now, we are using a suboptimal approach to storing the character and animations, as we have a copy of the character mesh for every single animation. This was because of the overhead of rigging every animation onto the same model simultaneously was too high and this seemed like a fair workaround. You can see these implemented in \texttt{src/Character.js}.
+\section{Collisions}
+To handle collisions, I casted four rays from the player's position at different heights. You can see the logic in \texttt{src/SwatCharacter.js}, being at the feet, knees, waist and chest. 4 points of collision prevented the player from walking through narrow (or rather short) objects. 
+
+In general, collision meshes are invisible \texttt{BoxGeometry} objects created in \texttt{ColliderUtils.js}. Typically, visible room geometry have corresponding invisible collider boxes registered in the level's collidables array. LevelTwo uses the terrain's top surface mesh as its collidable directly. 
+
+\subsection{Wall Sliding}
+To help with the feel of the game, I incorporated wall sliding, where the system would decompose movement (attempted) into its X and Z components, trying each independently, giving a more natural feel. This can be found in \texttt{src/SwatCharacter.js} in \texttt{update()}.
+
+\subsection{Ground detection and gravity}
+A single ray is cast downward from slightly above the player's feet. This prevented a small bug where if the floor was too thin, sometimes you would phase through due to some of my animations. The maximum check distance is 10 units, with initial velocity at 5 units per second and gravity at -15 units per second squared. 
+
+With this I also incorporated landing detection, where if the falling velocity was negative and the new Y was at or below the detected ground, snap to 0 velocity and add a jump cooldown. 
+
+\subsection{Camera wall avoidance}
+The third-person camera sits behind and above the player, with the view directed to some position slightly to the right of the player's head. 
+
+In games, it is standard to camera behaviour not to allow clipping through solid walls, and we mimic that behaviour here by castubg a ray between the character's head toward the ideal camera position. If the ray hits a wall/collidable before hitting the ideal camera position, it is pulled forward some distance in order to keep the camera in front of the room. 
+
 \section{Interactivity}
-\section{Collisions \& Physics}
+Interaction raycasting is a separate raycasting system from collidables. Instead of casting from the body it casts from the camera centre, with a hit being calculated as being valid if its distance from hitting is less than some interactivity radius depending on the object. 
+
 \section{Heads-Up Display}
+The HUD is a pure DOM overlay. It sits as a \texttt{position: fixed} div covering the viewport. 

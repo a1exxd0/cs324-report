@@ -1,3 +1,9 @@
 \chapter{Graphics}
 \section{Level Design}
-\section{Lighting}
+\subsection{\texttt{LevelOne} Design}
+Geometry construction is handled by the \texttt{RoomBuilder}. We have the idea of a "doorway" which can be activated on interaction, where we can toggle a wall in and out of collidables, so the mesh becomes phasable. 
+
+I used enviromental storytelling via props from SketchFab \cite{sketchfab_glb}. For some of these models, I explicitly used Blender \cite{blender} to organise props onto things like tables. There are point lights scattered onto the ceiling and radioactive barrels across the two rooms in the level. 
+\subsection{\texttt{LevelTwo} Design}
+This level uses procedural terrain generation with a fixed seed. Each vertex height, meant to simulate hilly snow, is set by multi-octave noise. 
+
